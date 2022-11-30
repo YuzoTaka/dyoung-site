@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração</title>
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/sb-admin-2.css">
+    <link rel="stylesheet" href="css/config.css">
+    <link rel="stylesheet" href="css/crud.css">
+</head>
+
+<body onload="obterDadosTotem(idTotem)">
+    <div class="container">
+        <div class="left">
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                    <div class="sidebar-brand-icon rotate-n-15">
+
+                    </div>
+                    <img src="img/Logo-DYoung.png" width="60%">
+                </a>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
+
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="configuracao.html">
+                        <i class="fas fa-fw fa-tablet"></i>
+                        <span>Configurações</span></a>
+                </li>
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Nav Item - Charts -->
+
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span></a>
+                </li>
+
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="tables.html">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Tabela</span></a>
+                </li>
+
+
+
+                <li class="nav-item faq">
+                    <a class="nav-link" href="FAQ.html">
+                        <i class="fas fa-fw fa-question"></i>
+                        <span>FAQ</span></a>
+                </li> -->
+
+                <li class="nav-item faq">
+                    <a class="nav-link" href="https://dyoung.tomticket.com?account=3823360P15112022021213"
+                        target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-fw fa-headset"></i>
+                        <span>HelpDesk</span></a>
+                </li>
+
+
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+            </ul>
+        </div>
+        <div class="right">
+            <div class="botaoVoltar">
+                <a class="back" href="configuracao.html">Voltar</a>
+            </div>
+            <div class="crud">
+                <div class="ipt">
+                    <div>
+                        <input id="iptSerial" type="text" placeholder="Nº de série">
+                    </div>
+                    <br>
+                    <div class="label">
+                        Sistema Operacional
+                        <select name="" id="selectSO">
+                            <option value="Windows">Windows</option>
+                            <option value="Linux">Linux</option>
+                        </select>
+                    </div>
+                    <div>
+                        <br>
+                        <button class="btn" onclick="editarTotem(idTotem)">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+        <script src="../js/funcoes.js"></script>
+        <script src="crud.js "></script>
+</body>
+
+</html>
+
+<script>
+
+    let idTotem = location.hash.split("#")[1];
+    
+    function obterDadosTotem(idTotem) {
+        fetch(`/medidas/dadosTotem/${idTotem}`, { cache: 'no-store' }).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log('foi')
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    resposta.reverse();
+
+                    // var data = {
+                    //     totemId: resposta[idTotem].totemId,
+                    //     totemSerial: resposta[idTotem].totemSerial,
+                    //     totemSO: resposta[idTotem].totemSO,
+                    //     totemData: resposta[idTotem].totemData
+                    // }
+                    mostrarDados(resposta);
+
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
+    function mostrarDados(resposta) {
+        console.log(resposta[0].totemSerial);
+        iptSerial.value = resposta[0].totemSerial;
+        selectSO.value = resposta[0].totemSO;
+    }
+    function editarTotem(idTotem) {
+        var serialVar = iptSerial.value;
+        var soVar = selectSO.value;
+
+        if (serialVar == "" || soVar == "") {
+            alert("Preencha todos os campos. ");
+            return false;
+        }
+
+        // Enviando o valor da nova input
+        fetch("/medidas/editarTotem", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                serialServer: serialVar,
+                soServer: soVar,
+                idTotem: idTotem
+            })
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                // cardErro.style.display = "block";
+
+                alert("Totem editado com sucesso! Redirecionando para tela de configuração...");
+                setTimeout(() => {
+                    window.Location("configuracao.html");
+                }, "1000")
+            } else {
+                throw ("Houve um erro ao tentar adicionar");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        return false;
+
+    }
+</script>
