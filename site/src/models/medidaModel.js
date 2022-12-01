@@ -259,7 +259,7 @@ function alertaCpuTi(idPosto) {
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
 
-        instrucaoSql = `select uso_cpu 'dadoCpu', temp_cpu 'dadoTemperatura' 
+        instrucaoSql = `select uso_cpu 'dadoCpu' 
         from dado_cpu d 
         join totem t on d.fk_totem= t.idTotem 
         join posto p on t.fk_posto = p.idposto 
@@ -268,7 +268,7 @@ function alertaCpuTi(idPosto) {
 
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
 
-        instrucaoSql = `select uso_cpu 'dadoCpu', temp_cpu 'dadoTemperatura' 
+        instrucaoSql = `select uso_cpu 'dadoCpu'
         from dado_cpu d 
         join totem t on d.fk_totem= t.idTotem 
         join posto p on t.fk_posto = p.idposto 
@@ -382,18 +382,14 @@ function AlertarDiscoTotem() {
 }
 
 function AlertarCpuTotem() {
-    function AlertarCpuTotem() {
 
         instrucaoSql = ''
-
-
-
         if (process.env.AMBIENTE_PROCESSO == "producao") {
-            instrucaoSql = `SELECT uso_cpu 'dadoCpu', temp_cpu 'dadoTemp'
+            instrucaoSql = `SELECT uso_cpu 'dadoCpu'
         FROM dado_cpu;`;
 
         } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
-            instrucaoSql = `SELECT uso_cpu 'dadoCpu', temp_cpu 'dadoTemp'
+            instrucaoSql = `SELECT uso_cpu 'dadoCpu'
         FROM dado_cpu;`;
         } else {
             console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
@@ -402,7 +398,7 @@ function AlertarCpuTotem() {
 
         console.log("Executando a instrução SQL: \n" + instrucaoSql);
         return database.executar(instrucaoSql);
-    }
+    
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -484,7 +480,7 @@ function deletarTotem(idTotem) {
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucao = `
-        UPDATE Totem SET status = false WHERE idTotem = ${idTotem};
+        UPDATE Totem SET statusTotem = 0 WHERE idTotem = ${idTotem};
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);

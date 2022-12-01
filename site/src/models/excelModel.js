@@ -5,10 +5,10 @@ function getAllDadosCpuByIdTotem(idTotem) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = `SELECT uso_cpu 'usoCpu', temp_cpu 'tempCpu' from dado_cpu where fk_totem = ${idTotem};`;
+        instrucaoSql = `SELECT uso_cpu 'usoCpu' from dado_cpu where fk_totem = ${idTotem};`;
     }
     else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
-        instrucaoSql = `SELECT uso_cpu 'usoCpu', temp_cpu 'tempCpu' from dado_cpu where fk_totem = ${idTotem};`;
+        instrucaoSql = `SELECT uso_cpu 'usoCpu' from dado_cpu where fk_totem = ${idTotem};`;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
         return

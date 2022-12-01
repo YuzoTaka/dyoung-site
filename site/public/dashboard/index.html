@@ -374,18 +374,16 @@
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tem certeza que deseja sair?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Selecione o botão "Sair" se você estiver preparado para sair desta sessão.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a onclick="limparSessao()" class="btn btn-primary">Sair</a>
-                </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tem certeza que deseja sair?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Selecione o botão "Sair" se você estiver preparado para sair desta sessão.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <a onclick="limparSessao()" class="btn btn-primary">Sair</a>
             </div>
         </div>
     </div>
@@ -559,18 +557,15 @@
         }
 
         data.forEach(item => {
-            if (item.usoCpu >= limites.critico || item.usoDisco >= limites.critico || item.usoRam >= limites.critico || item.tempCpu >= limites.critico) {
-                console.log("caiu no 1")
+            if (item.usoCpu >= limites.critico || item.usoDisco >= limites.critico || item.usoRam >= limites.critico) {
                 qtdCritico++;
                 count_critico.innerHTML = qtdCritico;
             }
-            else if (item.usoCpu <= limites.alerta || item.tempCpu <= limites.alerta || item.usoDisco <= limites.alerta || item.usoRam <= limites.alerta) {
-                console.log("caiu no 2")
+            else if (item.usoCpu >= limites.alerta &&item.usoCpu < limites.critico || item.usoDisco >= limites.alerta && item.usoDisco < limites.critico|| item.usoRam >= limites.alerta && item.usoRam < limites.critico) {
                 qtdIdeal++
                 count_ideal.innerHTML = qtdIdeal;
             }
             else {
-                console.log("caiu no 3")
                 qtdAlerta++
                 count_alerta.innerHTML = qtdAlerta;
             }

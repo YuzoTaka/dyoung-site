@@ -28,4 +28,16 @@ router.post("/cadastrarUser", function (req, res) {
     usuarioController.cadastrarUser(req, res);
 })
 
+router.get("/dadosUser/:idFuncionario", function (req, res) {
+    usuarioController.obterDadosUser(req, res);
+});
+
+router.post("/editarUser", function (req, res) {
+    usuarioController.editarUser(req, res);
+})
+
+router.post("/deletarUser", function (req, res) {
+    usuarioController.deletarUser(req, res);
+})
+
 module.exports = router;

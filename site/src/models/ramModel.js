@@ -84,7 +84,7 @@ function getDadosCpuByIdTotem(idTotem) {
     if (process.env.AMBIENTE_PROCESSO == "producao") {
         instrucaoSqlRam = `SELECT uso_cpu 'usoCpu', FORMAT(data_hora_captura, 'dd-MM-yy-hh:mm:ss') 'dtHrColeta' from dado_cpu where fk_totem = ${idTotem};`;   
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
-        instrucaoSqlRam = `SELECT uso_cpu 'usoCpu', temp_cpu 'tempCpu', DATE_FORMAT(data_hora_captura, \"%d/%m/%Y | %H:%i:%s\") 'dtHrColeta' from dado_cpu where fk_totem = ${idTotem};`;
+        instrucaoSqlRam = `SELECT uso_cpu 'usoCpu', DATE_FORMAT(data_hora_captura, \"%d/%m/%Y | %H:%i:%s\") 'dtHrColeta' from dado_cpu where fk_totem = ${idTotem};`;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
         return

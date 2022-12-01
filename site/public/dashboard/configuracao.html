@@ -200,62 +200,7 @@
             cell7.innerHTML = `<a class="btnDelete" onclick="editarTotem(${data.totemId})">Editar</a> <a class="btnDelete" onclick="deletarTotem(${data.totemId})">Desativar</a>`;
         }
     }
-</script>
 
-<script>
-    function obterDadosFuncionário() {
-        fetch(`/usuarios/dadosFuncionario`, { cache: 'no-store' }).then(function (response) {
-            if (response.ok) {
-                response.json().then(function (resposta) {
-                    console.log('foi')
-                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
-                    resposta.reverse();
-
-                    insertNewRecordFuncionario(resposta);
-                });
-            } else {
-                console.error('Nenhum dado encontrado ou erro na API');
-            }
-        })
-            .catch(function (error) {
-                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
-            });
-    }
-
-    function insertNewRecordFuncionario(resposta) {
-        for (i = 0; i <= resposta.length; i++) {
-            var table = document.getElementById("employeeListFunc").getElementsByTagName('tbody')[0];
-            var newRow = table.insertRow(table.length);
-            var dataFunc = {
-                Id: resposta[i].Id,
-                nome: resposta[i].nome,
-                email: resposta[i].email,
-                cargo: resposta[i].cargo,
-                nomePosto: resposta[i].nomePosto,
-                status: resposta[i].status
-            }
-            var cell1 = newRow.insertCell(0);
-            cell1.innerHTML = dataFunc.Id;
-            var cell2 = newRow.insertCell(1);
-            cell2.innerHTML = dataFunc.nome;
-            var cell3 = newRow.insertCell(2);
-            cell3.innerHTML = dataFunc.email;
-            var cell4 = newRow.insertCell(3);
-            cell4.innerHTML = dataFunc.cargo;
-            var cell5 = newRow.insertCell(4);
-            cell5.innerHTML = dataFunc.nomePosto;
-            var cell6 = newRow.insertCell(5);
-            if (dataFunc.status == 1) {
-                cell6.innerHTML = "Ativo";
-            } else {
-                cell6.innerHTML = "Desativado";
-            }
-            var cell7 = newRow.insertCell(6);
-            cell7.innerHTML = `<a class="btnDelete" onclick="editarTotem(${dataFunc.Id})">Editar</a> <a class="btnDelete" onclick="deletarTotem(${dataFunc.Id})">Deletar</a>`;
-        }
-    }
-</script>
-<script>
     function deletarTotem(idTotem) {
         if (confirm("Tem certeza?")) {
             // Enviando o valor da nova input
@@ -295,6 +240,108 @@
 
     function editarTotem(idTotem) {
         location.assign("totemEdit.html#" + idTotem);
+    }
+</script>
+
+
+<script>
+    var idFuncionario;
+
+    function obterDadosFuncionário() {
+        fetch(`/usuarios/dadosFuncionario`, { cache: 'no-store' }).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log('foi')
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    resposta.reverse();
+
+                    insertNewRecordFuncionario(resposta);
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
+
+    function insertNewRecordFuncionario(resposta) {
+        for (i = 0; i <= resposta.length; i++) {
+            var table = document.getElementById("employeeListFunc").getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow(table.length);
+            var dataFunc = {
+                Id: resposta[i].Id,
+                nome: resposta[i].nome,
+                email: resposta[i].email,
+                cargo: resposta[i].cargo,
+                nomePosto: resposta[i].nomePosto,
+                status: resposta[i].status
+            }
+            idFuncionario = resposta[0].Id;
+            var cell1 = newRow.insertCell(0);
+            cell1.innerHTML = dataFunc.Id;
+            var cell2 = newRow.insertCell(1);
+            cell2.innerHTML = dataFunc.nome;
+            var cell3 = newRow.insertCell(2);
+            cell3.innerHTML = dataFunc.email;
+            var cell4 = newRow.insertCell(3);
+            cell4.innerHTML = dataFunc.cargo;
+            var cell5 = newRow.insertCell(4);
+            cell5.innerHTML = dataFunc.nomePosto;
+            var cell6 = newRow.insertCell(5);
+            if (dataFunc.status == 1) {
+                cell6.innerHTML = "Ativo";
+            } else {
+                cell6.innerHTML = "Desativado";
+            }
+            var cell7 = newRow.insertCell(6);
+            cell7.innerHTML = `<a class="btnDelete" onclick="editarUser(${dataFunc.Id})">Editar</a> <a class="btnDelete" onclick="deletarUser(${dataFunc.Id})">Deletar</a>`;
+        }
+    }
+
+
+    function deletarUser(idFuncionario) {
+        if (confirm("Tem certeza?")) {
+            // Enviando o valor da nova input
+            fetch("/usuarios/deletarUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    // crie um atributo que recebe o valor recuperado aqui
+                    // Agora vá para o arquivo routes/usuario.js
+                    idFuncionarioServer: idFuncionario
+                })
+            }).then(function (resposta) {
+
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    // cardErro.style.display = "block";
+
+                    alert("Funcionário desativado com sucesso!...");
+
+                    setTimeout(() => {
+                        location.reload();
+                    }, "500")
+                } else {
+                    throw ("Houve um erro ao tentar desativar");
+                }
+            }).catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
+            return false;
+
+        }
+    }
+
+
+
+    function editarUser(idFuncionario) {
+        location.assign("userEdit.html#" + idFuncionario);
     }
 
 </script>

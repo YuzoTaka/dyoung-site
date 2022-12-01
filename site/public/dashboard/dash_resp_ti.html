@@ -20,6 +20,8 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/sb-admin-2.css">
+    <script src="../js/funcoes.js"></script>
+
 
 </head>
 
@@ -114,7 +116,7 @@
                             </div>
                         </li>
 
-                        
+
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -188,7 +190,8 @@
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <div class="modal-body">Selecione o botão "Sair" se você estiver preparado para sair desta sessão.</div>
+                        <div class="modal-body">Selecione o botão "Sair" se você estiver preparado para sair desta
+                            sessão.</div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                             <a onclick="limparSessao()" class="btn btn-primary">Sair</a>
@@ -236,7 +239,7 @@
         }
     }
     function atualizarTotens(idPosto) {
-        
+
         fetch(`/avisos/listarTotensPorPosto/${idPosto}`).then(function (resposta) {
             if (resposta.ok) {
                 if (resposta.status == 204) {
